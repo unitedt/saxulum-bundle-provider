@@ -1,5 +1,5 @@
 {
-    "name": "saxulum/saxulum-bundle-provider",
+    "name": "unitedt/saxulum-bundle-provider",
     "description": "Saxulum Bundle Provider",
     "keywords": ["silex", "bundle"],
     "license": "MIT",
