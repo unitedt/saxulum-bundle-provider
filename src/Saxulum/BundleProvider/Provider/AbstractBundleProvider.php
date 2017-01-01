@@ -18,13 +18,11 @@ abstract class AbstractBundleProvider implements ServiceProviderInterface
     protected function addCommands(Application $app)
     {
         $path = $this->getPath();
-        $app['console.command.paths'] = $app->share(
-            $app->extend('console.command.paths', function ($paths) use ($path) {
-                $paths[] = $path . '/Command';
+        $app['console.command.paths'] = $app->extend('console.command.paths', function ($paths) use ($path) {
+            $paths[] = $path . '/Command';
 
-                return $paths;
-            })
-        );
+            return $paths;
+        });
     }
 
     /**
@@ -33,13 +31,11 @@ abstract class AbstractBundleProvider implements ServiceProviderInterface
     protected function addControllers(Application $app)
     {
         $path = $this->getPath();
-        $app['route_controller_paths'] = $app->share(
-            $app->extend('route_controller_paths', function ($paths) use ($path) {
-                $paths[] = $path . '/Controller';
+        $app['route_controller_paths'] = $app->extend('route_controller_paths', function ($paths) use ($path) {
+            $paths[] = $path . '/Controller';
 
-                return $paths;
-            })
-        );
+            return $paths;
+        });
     }
 
     /**
@@ -51,16 +47,16 @@ abstract class AbstractBundleProvider implements ServiceProviderInterface
         $path = $this->getPath();
 
         if (!isset($app['orm.ems.options'])) {
-            $app['orm.ems.options'] = $app->share(function () use ($app) {
+            $app['orm.ems.options'] = function () use ($app) {
                 $options = array(
                     'default' => $app['orm.em.default_options']
                 );
 
                 return $options;
-            });
+            };
         }
 
-        $app['orm.ems.options'] = $app->share($app->extend('orm.ems.options', function (array $options) use ($namespace, $path) {
+        $app['orm.ems.options'] = $app->extend('orm.ems.options', function (array $options) use ($namespace, $path) {
             $options['default']['mappings'][] = array(
                 'type' => 'annotation',
                 'namespace' => $namespace . '\Entity',
@@ -69,7 +65,7 @@ abstract class AbstractBundleProvider implements ServiceProviderInterface
             );
 
             return $options;
-        }));
+        });
     }
 
     /**
@@ -78,13 +74,11 @@ abstract class AbstractBundleProvider implements ServiceProviderInterface
     protected function addTranslatorResources(Application $app)
     {
         $path = $this->getPath();
-        $app['translation_paths'] = $app->share(
-            $app->extend('translation_paths', function ($paths) use ($path) {
-                $paths[] = $path . '/Resources/translations';
+        $app['translation_paths'] = $app->extend('translation_paths', function ($paths) use ($path) {
+            $paths[] = $path . '/Resources/translations';
 
-                return $paths;
-            })
-        );
+            return $paths;
+        });
     }
 
     /**
@@ -104,13 +98,11 @@ abstract class AbstractBundleProvider implements ServiceProviderInterface
         $path = $this->getPath();
         $twigNamespace = str_replace('\\', '', $this->getNamespace());
 
-        $app['twig.loader.filesystem'] = $app->share($app->extend('twig.loader.filesystem',
-            function (\Twig_Loader_Filesystem $twigLoaderFilesystem) use ($path, $twigNamespace) {
-                $twigLoaderFilesystem->addPath($path. '/Resources/views', $twigNamespace);
+        $app['twig.loader.filesystem'] = $app->extend('twig.loader.filesystem', function (\Twig_Loader_Filesystem $twigLoaderFilesystem) use ($path, $twigNamespace) {
+            $twigLoaderFilesystem->addPath($path. '/Resources/views', $twigNamespace);
 
-                return $twigLoaderFilesystem;
-            }
-        ));
+            return $twigLoaderFilesystem;
+        });
     }
 
     /**
