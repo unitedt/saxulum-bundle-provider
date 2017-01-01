@@ -3,7 +3,7 @@
 namespace Saxulum\BundleProvider\Provider;
 
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\ServiceProviderInterface;
 
 abstract class AbstractBundleProvider implements ServiceProviderInterface
 {
